@@ -1,0 +1,14 @@
+<resources>
+    <style name="Theme.Androiduistatedelegate" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/purple_700</item>
+    </style>
+
+    <style name="Theme.OldFlow" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="colorAccent">@color/purple_200</item>
+        <item name="colorPrimary">@color/purple_700</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorControlNormal">@color/black</item>
+    </style>
+
+</resources>
