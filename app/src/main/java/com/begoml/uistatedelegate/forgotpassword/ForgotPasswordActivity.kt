@@ -2,7 +2,7 @@ package com.begoml.uistatedelegate.forgotpassword
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.begoml.androidconcurrency.R
+import com.begoml.uistatedelegate.R
 
 class ForgotPasswordActivity : AppCompatActivity() {
 

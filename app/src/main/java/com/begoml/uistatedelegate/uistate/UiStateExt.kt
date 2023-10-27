@@ -1,9 +1,14 @@
 package com.begoml.uistatedelegate.uistate
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import com.begoml.uistatedelegate.state.UiStateDelegate
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -66,12 +71,12 @@ inline fun <T> AppCompatActivity.uiStateDiffRender(
  * render [State] with [lifecycleState]
  * The UI re-renders based on the new state
  **/
-fun <State, Event> ViewStateDelegate<State, Event>.render(
+fun <State, Event> UiStateDelegate<State, Event>.render(
     lifecycleOwner: LifecycleOwner,
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     render: UiStateDiffRender<State>
 ): Job = lifecycleOwner.lifecycleScope.launch {
-    uiState.flowWithLifecycle(
+    uiStateFlow.flowWithLifecycle(
         lifecycle = lifecycleOwner.lifecycle,
         minActiveState = lifecycleState,
     ).collectLatest(render::render)
@@ -81,12 +86,12 @@ fun <State, Event> ViewStateDelegate<State, Event>.render(
  * render [State] with [AppCompatActivity]
  * The UI re-renders based on the new state
  **/
-fun <State, Event> ViewStateDelegate<State, Event>.render(
+fun <State, Event> UiStateDelegate<State, Event>.render(
     lifecycle: Lifecycle,
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     render: UiStateDiffRender<State>
 ): Job = lifecycle.coroutineScope.launch {
-    uiState.flowWithLifecycle(
+    uiStateFlow.flowWithLifecycle(
         lifecycle = lifecycle,
         minActiveState = lifecycleState,
     ).collectLatest(render::render)
@@ -96,7 +101,7 @@ fun <State, Event> ViewStateDelegate<State, Event>.render(
  * send [Event] with [lifecycleState]
  * The UI re-renders based on the new event
  **/
-fun <State, Event> ViewStateDelegate<State, Event>.collectEvent(
+fun <State, Event> UiStateDelegate<State, Event>.collectEvent(
     lifecycleOwner: LifecycleOwner,
     lifecycleState: Lifecycle.State = Lifecycle.State.RESUMED,
     block: (event: Event) -> Unit
@@ -113,7 +118,7 @@ fun <State, Event> ViewStateDelegate<State, Event>.collectEvent(
  * send [Event] with [AppCompatActivity]
  * The UI re-renders based on the new event
  **/
-fun <State, Event> ViewStateDelegate<State, Event>.collectEvent(
+fun <State, Event> UiStateDelegate<State, Event>.collectEvent(
     lifecycle: Lifecycle,
     lifecycleState: Lifecycle.State = Lifecycle.State.RESUMED,
     block: (event: Event) -> Unit
@@ -124,4 +129,17 @@ fun <State, Event> ViewStateDelegate<State, Event>.collectEvent(
     ).collect {
         block(it)
     }
+}
+
+@Composable
+fun <State, Event> UiStateDelegate<State, Event>.CollectEventEffect(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    lifecycleState: Lifecycle.State = Lifecycle.State.RESUMED,
+    vararg keys: Any?,
+    collector: FlowCollector<Event>,
+) = LaunchedEffect(Unit, *keys) {
+    singleEvents.flowWithLifecycle(
+        lifecycle = lifecycleOwner.lifecycle,
+        minActiveState = lifecycleState,
+    ).collect(collector)
 }

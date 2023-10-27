@@ -1,4 +1,4 @@
-package com.begoml.scopingstatescompose.navigation
+package com.begoml.uistatedelegate.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

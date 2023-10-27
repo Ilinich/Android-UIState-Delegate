@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.begoml.core.AuthRepository
 import com.begoml.uistatedelegate.forgotpassword.ForgotPasswordViewModel.Event
 import com.begoml.uistatedelegate.forgotpassword.ForgotPasswordViewModel.UiState
-import com.begoml.uistatedelegate.uistate.ViewStateDelegate
-import com.begoml.uistatedelegate.uistate.ViewStateDelegateImpl
+import com.begoml.uistatedelegate.state.UiStateDelegate
+import com.begoml.uistatedelegate.state.UiStateDelegateImpl
 import kotlinx.coroutines.launch
 
 class ForgotPasswordViewModelFactory(
@@ -23,7 +23,7 @@ class ForgotPasswordViewModelFactory(
 class ForgotPasswordViewModel(
     private val authRepository: AuthRepository,
 ) : ViewModel(),
-    ViewStateDelegate<UiState, Event> by ViewStateDelegateImpl(UiState()) {
+    UiStateDelegate<UiState, Event> by UiStateDelegateImpl(UiState()) {
 
     data class UiState(
         val isLoading: Boolean = false,
@@ -37,19 +37,19 @@ class ForgotPasswordViewModel(
 
     init {
         viewModelScope.launch {
-            reduce { state -> state.copy(title = "Forgot Password") }
+            updateUiState { state -> state.copy(title = "Forgot Password") }
         }
     }
 
     fun onLoginTextChanged(value: Editable?) {
-        viewModelScope.asyncReduce { state -> state.copy(login = value.toString()) }
+        asyncUpdateUiState(viewModelScope) { state -> state.copy(login = value.toString()) }
     }
 
     fun onForgotPasswordClick() {
         viewModelScope.launch {
-            reduce { state -> state.copy(isLoading = true) }
-            authRepository.forgotPassword(stateValue.login)
+            updateUiState { state -> state.copy(isLoading = true) }
+            authRepository.forgotPassword(uiState.login)
             sendEvent(Event.FinishFlow)
-        }.invokeOnCompletion { viewModelScope.asyncReduce { state -> state.copy(isLoading = false) } }
+        }.invokeOnCompletion { asyncUpdateUiState(viewModelScope) { state -> state.copy(isLoading = false) } }
     }
 }

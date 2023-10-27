@@ -6,9 +6,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.begoml.androidconcurrency.R
-import com.begoml.androidconcurrency.databinding.FragmentForgotPasswordBinding
 import com.begoml.uistatedelegate.AppApplication
+import com.begoml.uistatedelegate.R
+import com.begoml.uistatedelegate.databinding.FragmentForgotPasswordBinding
 import com.begoml.uistatedelegate.forgotpassword.ForgotPasswordViewModel.UiState
 import com.begoml.uistatedelegate.uistate.collectEvent
 import com.begoml.uistatedelegate.uistate.render

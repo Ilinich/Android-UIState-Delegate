@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
-import com.begoml.scopingstatescompose.navigation.navigateSingleTopTo
+import com.begoml.uistatedelegate.navigation.navigateSingleTopTo
 import com.begoml.uistatedelegate.navigation.NavigationDestination
 import com.begoml.uistatedelegate.uistate.collectEvent
 import com.begoml.uistatedelegate.uistate.collectWithLifecycle

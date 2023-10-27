@@ -5,6 +5,9 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [CoreModule::class]
+    modules = [
+        CoreModule::class,
+        DelegateModule::class,
+    ]
 )
 interface AppComponent : AppProvider

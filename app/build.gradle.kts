@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("android")
     id("com.android.application")
@@ -5,13 +7,13 @@ plugins {
 }
 
 android {
-    namespace = "com.begoml.androidconcurrency"
-    compileSdk = 33
+    namespace = "com.begoml.uistatedelegate"
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.begoml.uistatedelegate"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -30,12 +32,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
+        freeCompilerArgs = listOf("-Xcontext-receivers")
     }
 
     buildFeatures {
@@ -44,7 +47,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 
     lint.abortOnError = false
@@ -53,22 +56,22 @@ android {
 dependencies {
     implementation(project(":core"))
 
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("androidx.fragment:fragment:1.5.5")
-    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.fragment:fragment:1.6.1")
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
 
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.activity:activity-compose:1.8.0")
 
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.10.00"))
 
     implementation("androidx.compose.material:material")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.ui:ui")
 
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
 
-    implementation("com.google.dagger:dagger:2.43.2")
-    kapt("com.google.dagger:dagger-compiler:2.43.2")
+    implementation("com.google.dagger:dagger:2.48")
+    kapt("com.google.dagger:dagger-compiler:2.48")
 
-    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-compose:2.7.4")
 }
